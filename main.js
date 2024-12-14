@@ -30,6 +30,17 @@ function collision (div1, div2) {
 
 }
 
+
+  
+
+var game;
+document.addEventListener("DOMContentLoaded", () => {
+        game = new Game();
+        game.start();
+    }
+);
+
+
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js')
       .then(registration => {
@@ -39,14 +50,7 @@ if ('serviceWorker' in navigator) {
         console.error('Error al registrar el Service Worker:', error);
       });
 }
-  
 
-var game;
-document.addEventListener("DOMContentLoaded", () => {
-        game = new Game();
-        game.start();
-    }
-);
 
 let deferredPrompt;
 const installButton = document.getElementById('installButton');
