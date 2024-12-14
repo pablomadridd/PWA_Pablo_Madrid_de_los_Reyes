@@ -29,9 +29,46 @@ function collision (div1, div2) {
     return !(a.bottom < b.top || a.top > b.bottom || a.right < b.left || a.left > b.right);
 
 }
+
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js')
+      .then(registration => {
+        console.log('Service Worker registrado con éxito:', registration);
+      })
+      .catch(error => {
+        console.error('Error al registrar el Service Worker:', error);
+      });
+}
+  
+
 var game;
 document.addEventListener("DOMContentLoaded", () => {
         game = new Game();
         game.start();
     }
 );
+
+let deferredPrompt;
+const installButton = document.getElementById('installButton');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  // Evita que el navegador muestre el prompt por defecto
+  e.preventDefault();
+  // Guarda el evento para usarlo más tarde
+  deferredPrompt = e;
+  // Muestra el botón de instalar
+  installButton.style.display = 'block';
+
+  installButton.addEventListener('click', () => {
+    installButton.style.display = 'none';
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === 'accepted') {
+        console.log('El usuario aceptó la instalación');
+      } else {
+        console.log('El usuario rechazó la instalación');
+      }
+      deferredPrompt = null;
+    });
+  });
+});
